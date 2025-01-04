@@ -1,0 +1,13 @@
+{
+  "tabWidth": 2,
+  "printWidth": 79,
+  "trailingComma": "all",
+  "overrides": [
+    {
+      "files": ["**/*.md"],
+      "options": {
+        "proseWrap": "always"
+      }
+    }
+  ]
+}
