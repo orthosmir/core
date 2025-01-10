@@ -1,0 +1,43 @@
+name: Deploy staging
+
+on:
+  push:
+    branches:
+      - main
+
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint code
+        run: npm run lint
+        run: npm run lint-types
+      - name: Run tests
+        run: npm run test
+  # TODO: Добавить данные хостинга на github
+  # deploy:
+  #   need: lint
+  #   runs-on: ubuntu-latest
+  #   concurrency:
+  #     group: staging
+  #     cancel-in-progress: true
+  #   steps:
+  #     - name: SSH command
+  #       uses: D3rHase/ssh-command-action@v0.3.1
+  #       with:
+  #         host: ${{ secrets.STAGING_SSH_HOST }} # hostname or server IP
+  #         user: ${{ secrets.STAGING_SSH_USERNAME }}
+  #         private_key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
+  #         host_fingerprint: ${{ secrets.STAGING_SSH_FINGERPRINT }}
+  #         command: source ~/.nvm/nvm.sh ~/deploy.sh
+  #         command: source ~/.nvm/nvm.sh echo 'Hello world'
