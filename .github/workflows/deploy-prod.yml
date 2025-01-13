@@ -1,9 +1,9 @@
-name: Deploy staging
+name: Deploy prod
 
 on:
   push:
     branches:
-      - main
+      - release
 
 jobs:
   lint:
@@ -29,16 +29,16 @@ jobs:
   #   needs: lint
   #   runs-on: ubuntu-latest
   #   concurrency:
-  #     group: staging
+  #     group: prod
   #     cancel-in-progress: true
   #   steps:
   #     - name: SSH command
   #       uses: D3rHase/ssh-command-action@v0.3.1
   #       with:
-  #         host: ${{ secrets.STAGING_SSH_HOST }} # hostname or server IP
-  #         user: ${{ secrets.STAGING_SSH_USERNAME }}
-  #         private_key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
-  #         host_fingerprint: ${{ secrets.STAGING_SSH_FINGERPRINT }}
+  #         host: ${{ secrets.PROD_SSH_HOST }} # hostname or server IP
+  #         user: ${{ secrets.PROD_SSH_USERNAME }}
+  #         private_key: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+  #         host_fingerprint: ${{ secrets.PROD_SSH_FINGERPRINT }}
   #         command: source ~/.nvm/nvm.sh echo 'Hello world'
   #       # command: source ~/.nvm/nvm.sh ~/core/deploy.sh
   # e2e:
@@ -60,7 +60,7 @@ jobs:
   #     - name: Run Playwright tests
   #       run: npx playwright test
   #       env:
-  #         TEST_ENV_BASE_URL: https://staging.orthosmir.ru
+  #         TEST_ENV_BASE_URL: https://orthosmir.ru
   #     - uses: actions/upload-artifact@v4
   #       if: ${{ !cancelled() }}
   #       with:
