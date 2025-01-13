@@ -1,3 +1,5 @@
+"use client";
+
 export function HomePage() {
-  return <main>Hello</main>;
+  return <main>Hello world</main>;
 }
