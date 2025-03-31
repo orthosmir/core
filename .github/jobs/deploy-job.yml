@@ -1,0 +1,20 @@
+name: Deploy
+
+# !TODO: Доделать, когда будет хостинг
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: staging
+      cancel-in-progress: true
+    steps:
+      - name: SSH command
+        uses: D3rHase/ssh-command-action@v0.3.1
+        with:
+          host: ${{ secrets.STAGING_SSH_HOST }} # hostname or server IP
+          user: ${{ secrets.STAGING_SSH_USERNAME }}
+          private_key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
+          host_fingerprint: ${{ secrets.STAGING_SSH_FINGERPRINT }}
+          command: source ~/.nvm/nvm.sh echo 'Hello world' # for debugging
+        # command: source ~/.nvm/nvm.sh ~/core/deploy.sh

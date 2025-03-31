@@ -1,69 +1,20 @@
-name: Deploy prod
+name: Deploy Prod
 
 on:
   push:
-    branches:
-      - release
+    branches: [release]
+  pull_request:
+    branches: [release]
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Lint code
-        run: |
-          npm run lint 
-          npm run lint-types
-      - name: Run tests
-        run: npm run test
+  test:
+    uses: .github/jobs/test-job.yml
   # !TODO: Доделать, когда будет хостинг
   # deploy:
-  #   needs: lint
-  #   runs-on: ubuntu-latest
-  #   concurrency:
-  #     group: prod
-  #     cancel-in-progress: true
-  #   steps:
-  #     - name: SSH command
-  #       uses: D3rHase/ssh-command-action@v0.3.1
-  #       with:
-  #         host: ${{ secrets.PROD_SSH_HOST }} # hostname or server IP
-  #         user: ${{ secrets.PROD_SSH_USERNAME }}
-  #         private_key: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
-  #         host_fingerprint: ${{ secrets.PROD_SSH_FINGERPRINT }}
-  #         command: source ~/.nvm/nvm.sh echo 'Hello world'
-  #       # command: source ~/.nvm/nvm.sh ~/core/deploy.sh
-  # e2e:
-  #   needs: deploy
-  #   timeout-minutes: 60
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
-  #     - name: Set up Node.js
-  #       uses: actions/setup-node@v4
-  #       with:
-  #         node-version: lts/*
-  #         cache: npm
-  #     - name: Install dependencies
-  #       run: npm ci
-  #     - name: Install Playwright Browsers
-  #       run: npx playwright install --with-deps
-  #     - name: Run Playwright tests
-  #       run: npx playwright test
-  #       env:
-  #         TEST_ENV_BASE_URL: https://orthosmir.ru
-  #     - uses: actions/upload-artifact@v4
-  #       if: ${{ !cancelled() }}
-  #       with:
-  #         name: playwright-report
-  #         path: playwright-report/
-  #         retention-days: 30
+  #   needs: test
+  #   uses: ./.github/jobs/deploy-job.yml
+  e2e:
+    needs: test
+    uses: .github/jobs/e2e-job.yml
+    with:
+      TEST_ENV_BASE_URL: https://orthosmir.ru
