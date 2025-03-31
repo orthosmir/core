@@ -1,14 +1,17 @@
-name: E2E Tests
+name: Job - E2E Tests
 
-jobs:
-  e2e:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
+on:
+  workflow_call:
     inputs:
       TEST_ENV_BASE_URL:
         description: "Base URL for E2E tests"
         required: true
         type: string
+
+jobs:
+  e2e:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

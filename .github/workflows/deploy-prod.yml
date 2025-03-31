@@ -2,19 +2,17 @@ name: Deploy Prod
 
 on:
   push:
-    branches: [release]
+    branches: ["release"]
   pull_request:
-    branches: [release]
+    branches: ["release"]
 
 jobs:
-  test:
-    uses: .github/jobs/test-job.yml
   # !TODO: Доделать, когда будет хостинг
   # deploy:
   #   needs: test
-  #   uses: ./.github/jobs/deploy-job.yml
+  #   uses: ./.github/workflows/job.deploy.yml
   e2e:
-    needs: test
-    uses: .github/jobs/e2e-job.yml
+    needs: deploy
+    uses: ./.github/workflows/job.e2e.yml
     with:
       TEST_ENV_BASE_URL: https://orthosmir.ru

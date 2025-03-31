@@ -1,4 +1,7 @@
-name: Tests
+name: Job - Unit Tests
+
+on:
+  workflow_call:
 
 jobs:
   test:

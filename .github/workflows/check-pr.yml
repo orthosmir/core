@@ -1,4 +1,4 @@
-name: Pull Request
+name: Check Pull Request
 
 on:
   push:
@@ -6,4 +6,4 @@ on:
 
 jobs:
   test:
-    uses: ./.github/jobs/test-job.yml
+    uses: ./.github/workflows/job.test.yml
